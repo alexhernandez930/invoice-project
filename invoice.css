@@ -1,0 +1,94 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #eeeeee;
+  font-family: Arial, sans-serif;
+}
+
+/* Actual paper */
+.invoice {
+  width: 8.5in;
+  min-height: 11in;
+
+  margin: 30px auto;
+  padding: 0.6in;
+
+  background-color: white;
+}
+.title {
+  text-align: right;
+  line-height: 0.2;
+  margin-bottom: 8px;
+}
+.top {
+  img {
+    width: 24%;
+    height: 5%;
+  }
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  /* background-color: #b2e0b2; */
+}
+.user-info {
+  text-align: right;
+  line-height: 0.7;
+}
+.user-info h2 {
+  margin-bottom: 5px;
+}
+.user-info p {
+  margin-bottom: 2px;
+}
+hr {
+  margin-bottom: 80;
+}
+
+.invoice-info {
+  display: flex;
+  justify-content: space-between;
+}
+.invoice-customer-info {
+  text-align: left;
+  max-width: 250px;
+  line-height: 1.2;
+}
+.invoice-customer-info p {
+  margin-bottom: 5px;
+}
+.invoice-num-date {
+  margin-top: 15px;
+  text-align: right;
+}
+
+/* Footer */
+
+footer {
+  margin-top: 70px;
+
+  text-align: center;
+
+  font-size: 14px;
+}
+
+/* PDF / Printing */
+
+@page {
+  size: Letter;
+  margin: 0;
+}
+
+@media print {
+  body {
+    background-color: white;
+  }
+
+  .invoice {
+    margin: 0;
+    box-shadow: none;
+  }
+}
