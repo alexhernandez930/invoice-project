@@ -16,7 +16,7 @@ body {
   margin: 30px auto;
   padding: 0.6in;
 
-  background-color: white;
+  background-color: lightgrey;
 }
 .title {
   text-align: right;
@@ -25,24 +25,27 @@ body {
 }
 .top {
   img {
-    width: 24%;
-    height: 5%;
+    width: 20%;
+    height: 40%;
   }
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 8px;
-  /* background-color: #b2e0b2; */
+  margin-bottom: 0;
+
+  background-color: #b2e0b2;
 }
 .user-info {
   text-align: right;
-  line-height: 0.7;
+  line-height: 1.2;
+  width: 300px;
 }
 .user-info h2 {
-  margin-bottom: 5px;
+  margin: 0 0 12px 0;
+  line-height: 1.1;
 }
 .user-info p {
-  margin-bottom: 2px;
+  margin: 6px 0;
 }
 hr {
   margin-bottom: 80;
@@ -63,6 +66,16 @@ hr {
 .invoice-num-date {
   margin-top: 15px;
   text-align: right;
+}
+.name {
+  text-align: left;
+  line-height: 0.1;
+}
+.name-top {
+  background-color: #b2e0b2;
+}
+.name-top h2 {
+  margin-top: 0;
 }
 
 /* Footer */
