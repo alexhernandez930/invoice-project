@@ -78,6 +78,26 @@ hr {
   margin-top: 0;
 }
 
+/*The table instructions*/
+table {
+  margin-top: 15%;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid black;
+  text-align: center;
+  padding: 8px;
+}
+tr {
+}
+
+tr:nth-child(eve) {
+  background-color: #b2e0b2;
+}
+
 /* Footer */
 
 footer {
