@@ -48,12 +48,16 @@ body {
   margin: 6px 0;
 }
 hr {
-  margin-bottom: 80;
+  margin-bottom: 20px;
+}
+.items {
+  margin-top: 10%;
 }
 
 .invoice-info {
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
 }
 .invoice-customer-info {
   text-align: left;
@@ -64,7 +68,7 @@ hr {
   margin-bottom: 5px;
 }
 .invoice-num-date {
-  margin-top: 15px;
+  margin-top: 1px;
   text-align: right;
 }
 .name {
