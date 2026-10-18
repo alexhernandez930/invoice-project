@@ -1,13 +1,18 @@
-console.log("create-invoice.js is runninmg");
+// --------------------------------------------------
+// GET IMPORTANT HTML ELEMENTS
+// --------------------------------------------------
 
 const addItemButton = document.getElementById("add-item");
 const itemsBody = document.getElementById("items-body");
-const invoiceForm = document.getElementById("invoice-form");
+const invoiceTotal = document.getElementById("invoice-total");
 const previewButton = document.getElementById("preview-invoice");
+
+// --------------------------------------------------
+// CALCULATE INVOICE TOTAL
+// --------------------------------------------------
 
 function calculateTotal() {
   const prices = document.querySelectorAll(".item-price");
-  const invoiceTotal = document.getElementById("invoice-total");
 
   let total = 0;
 
@@ -21,6 +26,10 @@ function calculateTotal() {
 
   invoiceTotal.textContent = "$" + total.toFixed(2);
 }
+
+// --------------------------------------------------
+// ADD NEW ITEM
+// --------------------------------------------------
 
 addItemButton.addEventListener("click", function () {
   const newRow = document.createElement("tr");
@@ -115,6 +124,7 @@ previewButton.addEventListener("click", function () {
     });
   });
 
+  // Put all invoice information together
   const invoiceData = {
     customerName: customerName,
     customerAddress: customerAddress,
