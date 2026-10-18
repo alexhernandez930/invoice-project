@@ -82,13 +82,23 @@ addItemButton.addEventListener("click", function () {
   `;
 
   itemsBody.appendChild(newRow);
+
+  calculateTotal();
 });
+
+// --------------------------------------------------
+// UPDATE TOTAL WHEN PRICE CHANGES
+// --------------------------------------------------
 
 itemsBody.addEventListener("input", function (event) {
   if (event.target.classList.contains("item-price")) {
     calculateTotal();
   }
 });
+
+// --------------------------------------------------
+// REMOVE ITEM
+// --------------------------------------------------
 
 itemsBody.addEventListener("click", function (event) {
   if (event.target.classList.contains("remove-item")) {
@@ -100,20 +110,33 @@ itemsBody.addEventListener("click", function (event) {
   }
 });
 
+// --------------------------------------------------
+// PREVIEW INVOICE
+// --------------------------------------------------
+
 previewButton.addEventListener("click", function () {
+  // Customer information
   const customerName = document.getElementById("customer-name").value;
+
   const customerAddress = document.getElementById("customer-address").value;
+
   const customerPhone = document.getElementById("customer-phone").value;
+
   const jobTitle = document.getElementById("job-title").value;
 
+  // Get every invoice item row
   const rows = document.querySelectorAll(".item-row");
 
   const items = [];
 
+  // Read each item
   rows.forEach(function (row) {
     const itemName = row.querySelector(".item-name").value;
+
     const quantity = row.querySelector(".item-quantity").value;
+
     const description = row.querySelector(".item-description").value;
+
     const price = row.querySelector(".item-price").value;
 
     items.push({
@@ -134,10 +157,9 @@ previewButton.addEventListener("click", function () {
     total: invoiceTotal.textContent,
   };
 
-  sessionStorage.setItem(
-    "invoiceData",
-    JSON.stringify(invoiceData)
-  );
+  // Save the invoice temporarily
+  sessionStorage.setItem("invoiceData", JSON.stringify(invoiceData));
 
+  // Open the invoice preview
   window.location.href = "invoice.html";
 });
