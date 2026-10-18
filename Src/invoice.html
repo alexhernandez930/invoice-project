@@ -2,97 +2,110 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width , initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Invoice</title>
 
     <link rel="stylesheet" href="invoice.css" />
   </head>
 
   <body>
-    <!--<div class="invoice">-->
     <div class="invoice">
+      <!-- Invoice title -->
       <div class="title">
         <h1><i>Invoice</i></h1>
       </div>
 
-      <!-- Making the very top of the invoice with the compnay name and logo -->
+      <!-- Company information -->
       <div class="top">
         <div class="logo">
-          <img src="../images/palm_cute.webp" />
+          <img src="palm_cute.webp" alt="Company Logo" />
         </div>
 
         <div class="user-info">
-          <h2>Company Name</h2>
-          <p>Phone Number</p>
-          <p>Email address</p>
+          <h2>Alejandro Hernandez</h2>
+          <p>760-658-1072</p>
+          <p>Alexhernandez9307@gmail.com</p>
         </div>
       </div>
+
+      <!-- Job title -->
       <div class="name-top">
-        <h2 class="name"><i>Title job description</i></h2>
+        <h2 class="name">
+          <i id="preview-job-title">Title Job Description</i>
+        </h2>
+
         <hr />
       </div>
 
+      <!-- Customer and invoice information -->
       <div class="invoice-info">
+        <!-- Customer -->
         <div class="invoice-customer-info">
           <h3>Bill To:</h3>
-          <p><b>Customer name</b></p>
-          <address>1220 factory road</address>
-          <address>san marcos ca 92078</address>
-          <address>customer Phone</address>
+
+          <p>
+            <b id="preview-customer-name"> Customer Name </b>
+          </p>
+
+          <address id="preview-address">Customer Address</address>
+
+          <address id="preview-phone">Customer Phone</address>
         </div>
 
+        <!-- Invoice number and date -->
         <div class="invoice-num-date">
-          <p>INV-0001</p>
-          <data>October 12, 20206</data>
+          <p id="preview-invoice-number">INV-0022</p>
+
+          <time id="preview-date"> October 17, 2026 </time>
         </div>
       </div>
 
+      <!-- Invoice items -->
       <table class="items">
-        <tr>
-          <th>Item</th>
-          <th>Quantitiy</th>
-          <th>Description</th>
-          <th>Price</th>
-        </tr>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Description</th>
+            <th>Price</th>
+          </tr>
+        </thead>
 
-        <tr>
-          <td>wood</td>
-          <td>2</td>
-          <td>bought the wood to make the fence</td>
-          <td>100.00</td>
-        </tr>
-
-        <tr>
-          <td>concrete</td>
-          <td>3</td>
-          <td>pour concrete and make the post on fence</td>
-          <td>200.00</td>
-        </tr>
-        <tr>
-          <td>concrete</td>
-          <td>3</td>
-          <td>pour concrete and make the post on fence</td>
-          <td>200.00</td>
-        </tr>
+        <!-- JavaScript will create the rows here -->
+        <tbody id="preview-items"></tbody>
       </table>
 
+      <!-- Bottom section -->
       <div class="bottom-area">
         <div class="bottom-section">
+          <!-- Notes -->
           <div class="note-box">
             <h1>NOTES:</h1>
-            <p>If any questions, please call 760-555-1234 or email at</p>
-            <p>company@email.com</p>
+
+            <p>
+              If you have any questions, please call 760-658-1072 or email us at
+            </p>
+
+            <p>Alexhernandez9307@gmail.com</p>
           </div>
+
+          <!-- Total -->
           <div class="total-box">
             <h3>TOTAL</h3>
-            <p>$500.00</p>
+
+            <p id="preview-total">$0.00</p>
           </div>
         </div>
 
+        <!-- Footer -->
         <footer>
           <p>Thank you for your business.</p>
         </footer>
       </div>
     </div>
+
+    <!-- Invoice preview JavaScript -->
+    <script src="invoice-preview.js"></script>
   </body>
 </html>
