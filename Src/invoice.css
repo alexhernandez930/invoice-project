@@ -17,6 +17,8 @@ body {
   padding: 0.6in;
 
   background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
 }
 .title {
   text-align: right;
@@ -47,9 +49,9 @@ body {
 .user-info p {
   margin: 6px 0;
 }
-hr {
+/* hr {
   margin-bottom: 20px;
-}
+} */
 .items {
   margin-top: 10%;
 }
@@ -101,11 +103,38 @@ td {
 th {
   border-bottom: 2px solid black;
 }
-.price {
-  width: 300px;
+.bottom-area {
+  margin-top: auto;
+}
+
+.bottom-section {
+  display: flex;
+
+  margin-top: 20px;
+}
+
+.notes-box {
+  width: 42%;
+  background-color: #e5eef8;
+  padding: 30px;
+}
+
+.total-box {
+  width: 35%;
   margin-left: auto;
-  margin-top: 30px;
   background-color: #b2e0b2;
+  padding: 30px;
+  text-align: center;
+  color: black;
+}
+.total-box p {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.notes-box h3,
+.total-box h3 {
+  margin-top: 0;
 }
 
 tr:nth-child(even) {
@@ -115,8 +144,6 @@ tr:nth-child(even) {
 /* Footer */
 
 footer {
-  margin-top: 70px;
-
   text-align: center;
 
   font-size: 14px;
