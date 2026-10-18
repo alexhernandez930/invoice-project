@@ -1,0 +1,121 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #eeeeee;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  width: 90%;
+  max-width: 1000px;
+
+  margin: 40px auto;
+
+  background-color: white;
+
+  padding: 30px;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+.form-section {
+  margin-bottom: 35px;
+}
+
+.form-section h2 {
+  border-bottom: 2px solid #b2e0b2;
+  padding-bottom: 8px;
+}
+
+label {
+  display: block;
+
+  font-weight: bold;
+
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+input,
+textarea {
+  width: 100%;
+
+  padding: 10px;
+
+  font-size: 16px;
+
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  padding: 10px;
+}
+
+td {
+  padding: 8px;
+  vertical-align: top;
+}
+
+#add-item {
+  margin-top: 15px;
+
+  padding: 10px 15px;
+
+  cursor: pointer;
+}
+
+.remove-item {
+  padding: 10px;
+
+  cursor: pointer;
+}
+
+.total-section {
+  text-align: right;
+
+  margin-top: 30px;
+}
+
+#invoice-total {
+  font-size: 32px;
+  font-weight: bold;
+
+  margin-top: 5px;
+}
+
+.actions {
+  text-align: right;
+
+  margin-top: 30px;
+}
+
+.primary-button {
+  padding: 12px 25px;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  background-color: #b2e0b2;
+
+  border: none;
+  border-radius: 4px;
+
+  cursor: pointer;
+}

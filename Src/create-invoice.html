@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Create Invoice</title>
+    <link rel="stylesheet" href="create-invoice.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Create Invoice</h1>
+
+      <form id="invoice-form">
+        <section class="form-section">
+          <h2>Customer Information</h2>
+
+          <label for="customer-name">Customer Name</label>
+          <input type="text" id="customer-name" placeholder="John Smith" />
+          <label for="customer-address">Job Address</label>
+          <input
+            type="text"
+            id="customer-address"
+            placeholder="Start Typing Address...."
+          />
+          <label for="customer-phonenumber">Phone Number</label>
+          <input
+            type="tel"
+            id="customer-phonenumber"
+            placeholder="123-456-7890"
+          />
+        </section>
+
+        <!--Job information-->
+
+        <section class="form-section">
+          <h2>Job Information</h2>
+          <label for="job-title">Job Title</label>
+          <input type="text" id="job-title" placeholder="fence repair" />
+        </section>
+
+        <!--Items-->
+
+        <section class="form-section">
+          <h2>Invoice Items</h2>
+          <table id="items-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Quantitiy</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+            <tbody id="items-body">
+              <tr class="item-row">
+                <td>
+                  <input type="text" class="item-name" placeholder="wood" />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="item-quanitiy"
+                    value="1"
+                    min="1"
+                  />
+                </td>
+                <td>
+                  <textarea
+                    class="item-description"
+                    placeholder="Described the work performed"
+                  ></textarea>
+                </td>
+
+                <td>
+                  <input
+                    type="number"
+                    class="item-price"
+                    placeholder="0.00"
+                    min="0"
+                    step="0.01"
+                  />
+                </td>
+                <td>
+                  <button type="button" class="remove-item">Remove</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" id="add-item">+ Add Items</button>
+        </section>
+
+        <!--Total-->
+        <section class="total-section">
+          <h2>Total</h2>
+          <p id="invoice-total">$0.00</p>
+        </section>
+
+        <!--Buttons-->
+        <div class="actions">
+          <button type="button" id="preview-invoice" class="primary-button">
+            Preview Invoice
+          </button>
+        </div>
+      </form>
+    </div>
+    <script src="create-invoice.js"></script>
+  </body>
+</html>
