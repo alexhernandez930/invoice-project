@@ -4,104 +4,194 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Create Invoice</title>
+    <title data-i18n="Create Invoice">Create Invoice</title>
     <link rel="stylesheet" href="create-invoice.css" />
+    <script src="invoice-language.js" defer></script>
+    <script src="invoice-account.js" defer></script>
+    <script src="invoice-autocomplete.js" defer></script>
+    <script src="create-invoice.js" defer></script>
+    <script src="invoice-assistant.js" defer></script>
+    <script src="invoice-logo.js" defer></script>
   </head>
 
   <body>
-    <div class="container">
-      <h1>Create Invoice</h1>
+    <header class="site-header">
+      <a class="brand" href="create-invoice.html">
+        <img src="palm_cute.webp" width="40" height="40" alt="" />
+        <span data-i18n="Invoice Maker">Invoice Maker</span>
+      </a>
+      <nav class="page-links" aria-label="Workspace" data-i18n-label="Workspace">
+        <a href="create-invoice.html" aria-current="page" data-i18n="Create invoice">Create invoice</a>
+        <a href="invoices.html" data-i18n="Saved invoices">Saved invoices</a>
+        <a href="admin.html" data-admin-link data-i18n="Administrator" hidden>Administrator</a>
+      </nav>
+      <div class="account-controls">
+        <button type="button" id="invoice-language" lang="es">Español</button>
+        <span data-account-name></span>
+        <button type="button" id="my-logo" data-i18n="My logo">My logo</button>
+        <button type="button" id="logout-invoice" data-i18n="Sign out" hidden>Sign out</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <header class="workspace-heading">
+        <h1 data-i18n="Create Invoice">Create Invoice</h1>
+        <p data-i18n="Prepare a customer invoice, from job details to the final total.">Prepare a customer invoice, from job details to the final total.</p>
+      </header>
 
       <form id="invoice-form">
-        <section class="form-section">
-          <h2>Customer Information</h2>
+        <div class="editor-grid">
+          <section class="form-section customer-section">
+            <h2 data-i18n="Customer Information">Customer Information</h2>
 
-          <label for="customer-name">Customer Name</label>
-          <input type="text" id="customer-name" placeholder="John Smith" />
-          <label for="customer-address">Job Address</label>
-          <input
-            type="text"
-            id="customer-address"
-            placeholder="Start Typing Address...."
-          />
-          <label for="customer-phone">Phone Number</label>
-          <input type="tel" id="customer-phone" placeholder="123-456-7890" />
-        </section>
+            <div class="customer-name-field autocomplete-field">
+              <label for="customer-name" data-i18n="Customer Name">Customer Name</label>
+              <input
+                type="text" id="customer-name" placeholder="John Smith" data-i18n-placeholder="John Smith"
+                autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false"
+                aria-controls="customer-suggestions"
+              />
+              <ul id="customer-suggestions" class="suggestion-list" role="listbox"
+                  aria-label="Saved customers" data-i18n-label="Saved customers" hidden></ul>
+              <p class="lookup-hint" role="status" hidden></p>
+            </div>
+            <div class="autocomplete-field">
+              <label for="customer-address" data-i18n="Job Address">Job Address</label>
+              <input
+                type="text"
+                id="customer-address"
+                placeholder="Street address" data-i18n-placeholder="Street address"
+                autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false"
+                aria-controls="address-suggestions" aria-describedby="address-lookup-hint"
+              />
+              <ul id="address-suggestions" class="suggestion-list" role="listbox"
+                  aria-label="Address suggestions" data-i18n-label="Address suggestions" hidden></ul>
+              <p class="lookup-hint" role="status" hidden></p>
+              <p id="address-lookup-hint" class="lookup-hint">
+                <span data-i18n="Typed addresses are sent to Photon for suggestions.">Typed addresses are sent to Photon for suggestions.</span>
+                <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap</a>
+              </p>
+            </div>
+            <div>
+              <label for="customer-phone" data-i18n="Phone Number">Phone Number</label>
+              <input type="tel" id="customer-phone" placeholder="123-456-7890" />
+            </div>
+            <div class="job-field">
+              <label for="job-title" data-i18n="Job Title">Job Title</label>
+              <input type="text" id="job-title" placeholder="Fence repair" data-i18n-placeholder="Fence repair"
+                aria-describedby="job-title-hint" />
+              <p id="job-title-hint" class="lookup-hint" data-i18n="The assistant translates the job title for the English preview.">The assistant translates the job title for the English preview.</p>
+            </div>
+          </section>
 
-        <!--Job information-->
-
-        <section class="form-section">
-          <h2>Job Information</h2>
-          <label for="job-title">Job Title</label>
-          <input type="text" id="job-title" placeholder="fence repair" />
-        </section>
+          <section class="form-section work-assistant" aria-labelledby="work-assistant-title">
+            <h2 id="work-assistant-title" data-i18n="Describe the work">Describe the work</h2>
+            <p id="work-assistant-help" data-i18n="Type or record the work and what you charged for each task.">
+              Type or record the work and what you charged for each task.
+            </p>
+            <label for="work-notes" class="visually-hidden" data-i18n="Work description">Work description</label>
+            <textarea id="work-notes" maxlength="8000" rows="5" aria-describedby="work-assistant-help"
+              placeholder="I cut down the trees in front of the house for $150 and removed brush by the stop sign for $120."
+              data-i18n-placeholder="I cut down the trees in front of the house for $150 and removed brush by the stop sign for $120."></textarea>
+            <div class="work-assistant-actions">
+              <button type="button" id="record-work" data-i18n="Record voice" disabled>Record voice</button>
+              <button type="button" id="create-work-items" data-i18n="Create items" disabled>Create items</button>
+            </div>
+            <p id="work-assistant-provider" class="lookup-hint" hidden></p>
+            <p id="work-assistant-status" role="status"></p>
+          </section>
+        </div>
 
         <!--Items-->
 
         <section class="form-section">
-          <h2>Invoice Items</h2>
-          <table id="items-table">
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Remove</th>
-              </tr>
-            </thead>
-            <tbody id="items-body">
-              <tr class="item-row">
-                <td>
-                  <input type="text" class="item-name" placeholder="wood" />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    class="item-quantity"
-                    value="1"
-                    min="1"
-                  />
-                </td>
-                <td>
-                  <textarea
-                    class="item-description"
-                    placeholder="Described the work performed"
-                  ></textarea>
-                </td>
+          <h2 data-i18n="Invoice Items">Invoice Items</h2>
+          <div class="items-scroll" tabindex="0" role="region" aria-label="Invoice items" data-i18n-label="Invoice items">
+            <table id="items-table">
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="Item">Item</th>
+                  <th scope="col" data-i18n="Qty">Qty</th>
+                  <th scope="col" data-i18n="Description">Description</th>
+                  <th scope="col" data-i18n="Price">Price</th>
+                  <th scope="col" data-i18n="Remove">Remove</th>
+                </tr>
+              </thead>
+              <tbody id="items-body">
+                <tr class="item-row">
+                  <td>
+                    <input type="text" class="item-name" aria-label="Item" data-i18n-label="Item" placeholder="Item" data-i18n-placeholder="Item" />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="item-quantity"
+                      aria-label="Quantity" data-i18n-label="Quantity"
+                      value="1"
+                      min="1"
+                    />
+                  </td>
+                  <td>
+                    <textarea
+                      class="item-description"
+                      aria-label="Description" data-i18n-label="Description"
+                      placeholder="Describe the work" data-i18n-placeholder="Describe the work"
+                    ></textarea>
+                  </td>
 
-                <td>
-                  <input
-                    type="number"
-                    class="item-price"
-                    placeholder="0.00"
-                    min="0"
-                    step="0.01"
-                  />
-                </td>
-                <td>
-                  <button type="button" class="remove-item">Remove</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <button type="button" id="add-item">+ Add Items</button>
+                  <td>
+                    <input
+                      type="number"
+                      class="item-price"
+                      aria-label="Price" data-i18n-label="Price"
+                      placeholder="0.00"
+                      min="0"
+                      step="0.01"
+                    />
+                  </td>
+                  <td>
+                    <button type="button" class="remove-item" data-i18n="Remove">Remove</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <button type="button" id="add-item" data-i18n="+ Add item">+ Add item</button>
         </section>
 
-        <!--Total-->
-        <section class="total-section">
-          <h2>Total</h2>
-          <p id="invoice-total">$0.00</p>
-        </section>
-
-        <!--Buttons-->
-        <div class="actions">
-          <button type="button" id="preview-invoice" class="primary-button">
+        <div class="checkout-card">
+          <section class="total-section">
+            <h2 data-i18n="Total">Total</h2>
+            <p id="invoice-total">$0.00</p>
+          </section>
+          <button type="button" id="preview-invoice" class="primary-button" data-i18n="Preview Invoice">
             Preview Invoice
           </button>
         </div>
       </form>
-    </div>
-    <script src="create-invoice.js"></script>
+    </main>
+
+    <dialog id="account-logo-dialog" class="account-dialog" aria-labelledby="account-logo-title">
+      <form id="account-logo-form" method="post">
+        <h2 id="account-logo-title" data-i18n="My logo">My logo</h2>
+        <p class="lookup-hint" data-i18n="This logo appears on invoices from your account.">
+          This logo appears on invoices from your account.
+        </p>
+        <img id="account-logo-preview" class="account-logo-preview" src="palm_cute.webp"
+          width="112" height="112" alt="Invoice logo" data-i18n-alt="Invoice logo" />
+        <label for="logo-photo" data-i18n="Upload a logo photo">Upload a logo photo</label>
+        <input id="logo-photo" type="file" accept="image/png,image/jpeg,image/webp"
+          aria-describedby="logo-file-help" />
+        <p id="logo-file-help" class="lookup-hint" data-i18n="Choose a PNG, JPEG, or WebP image up to 10 MB.">
+          Choose a PNG, JPEG, or WebP image up to 10 MB.
+        </p>
+        <p id="logo-upload-status" class="lookup-hint" role="status"></p>
+        <div class="account-form-actions">
+          <button type="button" id="close-logo-dialog" data-i18n="Close">Close</button>
+          <button type="button" id="reset-logo" data-i18n="Use default logo">Use default logo</button>
+          <button type="submit" id="save-logo" class="primary-button" data-i18n="Save logo" disabled>Save logo</button>
+        </div>
+      </form>
+    </dialog>
   </body>
 </html>

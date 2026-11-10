@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="Saved Invoices">Saved Invoices</title>
+    <link rel="stylesheet" href="create-invoice.css" />
+    <script src="invoice-language.js" defer></script>
+    <script src="invoice-account.js" defer></script>
+    <script src="invoice-search.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="create-invoice.html">
+        <img src="palm_cute.webp" width="40" height="40" alt="" />
+        <span data-i18n="Invoice Maker">Invoice Maker</span>
+      </a>
+      <nav class="page-links" aria-label="Workspace" data-i18n-label="Workspace">
+        <a href="create-invoice.html" data-i18n="Create invoice">Create invoice</a>
+        <a href="invoices.html" aria-current="page" data-i18n="Saved invoices">Saved invoices</a>
+        <a href="admin.html" data-admin-link data-i18n="Administrator" hidden>Administrator</a>
+      </nav>
+      <div class="account-controls">
+        <button type="button" id="invoice-language" lang="es">Español</button>
+        <span data-account-name></span>
+        <button type="button" id="logout-invoice" data-i18n="Sign out" hidden>Sign out</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <header class="workspace-heading">
+        <h1 data-i18n="Saved Invoices">Saved Invoices</h1>
+        <p data-i18n="Find a past invoice and open it to review or print.">Find a past invoice and open it to review or print.</p>
+      </header>
+
+      <p id="archive-owner" class="archive-owner" hidden><span></span> <strong></strong></p>
+      <form class="form-section" id="invoice-search" role="search">
+        <label for="query" data-i18n="Invoice number, customer name, phone, or address">Invoice number, customer name, phone, or address</label>
+        <div class="search-controls">
+          <input type="search" id="query" name="q" maxlength="300" />
+          <button type="submit" data-i18n="Search">Search</button>
+        </div>
+      </form>
+
+      <p id="search-status" role="status"></p>
+      <div class="items-scroll" tabindex="0" role="region" aria-label="Search results" data-i18n-label="Search results" id="search-results" hidden>
+        <table class="saved-invoices">
+          <thead>
+            <tr>
+              <th scope="col" data-i18n="Invoice">Invoice</th>
+              <th scope="col" data-i18n="Customer">Customer</th>
+              <th scope="col" data-i18n="Phone">Phone</th>
+              <th scope="col" data-i18n="Address">Address</th>
+              <th scope="col" data-i18n="Date">Date</th>
+              <th scope="col" data-i18n="Total">Total</th>
+            </tr>
+          </thead>
+          <tbody id="invoice-results"></tbody>
+        </table>
+      </div>
+      <button id="more-invoices" type="button" hidden data-i18n="Show more">Show more</button>
+    </main>
+  </body>
+</html>

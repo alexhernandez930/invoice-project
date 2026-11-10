@@ -4,6 +4,7 @@
 
 const addItemButton = document.getElementById("add-item");
 const itemsBody = document.getElementById("items-body");
+const itemRowTemplate = itemsBody.querySelector(".item-row").cloneNode(true);
 const invoiceTotal = document.getElementById("invoice-total");
 const previewButton = document.getElementById("preview-invoice");
 
@@ -31,59 +32,33 @@ function calculateTotal() {
 // ADD NEW ITEM
 // --------------------------------------------------
 
-addItemButton.addEventListener("click", function () {
-  const newRow = document.createElement("tr");
-
-  newRow.classList.add("item-row");
-
-  newRow.innerHTML = `
-    <td>
-      <input
-        type="text"
-        class="item-name"
-        placeholder="Item"
-      />
-    </td>
-
-    <td>
-      <input
-        type="number"
-        class="item-quantity"
-        value="1"
-        min="1"
-      />
-    </td>
-
-    <td>
-      <textarea
-        class="item-description"
-        placeholder="Describe the work performed"
-      ></textarea>
-    </td>
-
-    <td>
-      <input
-        type="number"
-        class="item-price"
-        placeholder="0.00"
-        min="0"
-        step="0.01"
-      />
-    </td>
-
-    <td>
-      <button
-        type="button"
-        class="remove-item"
-      >
-        Remove
-      </button>
-    </td>
-  `;
-
+function addItemRow() {
+  const newRow = itemRowTemplate.cloneNode(true);
+  translateInvoicePage(newRow);
   itemsBody.appendChild(newRow);
+  return newRow;
+}
 
-  calculateTotal();
+function updateRequiredPrice(input) {
+  if (input.required) input.setAttribute("aria-invalid", String(input.value === ""));
+}
+
+function fillItemRow(row, item) {
+  row.querySelector(".item-name").value = item.name;
+  row.querySelector(".item-quantity").value = item.quantity;
+  row.querySelector(".item-description").value = item.description;
+  const price = row.querySelector(".item-price");
+  price.value = item.price;
+  if (item.priceRequired) {
+    price.required = true;
+    price.dataset.i18nPlaceholder = "Enter price";
+    price.placeholder = invoiceText("Enter price");
+    updateRequiredPrice(price);
+  }
+}
+
+addItemButton.addEventListener("click", function () {
+  addItemRow().querySelector(".item-name").focus();
 });
 
 // --------------------------------------------------
@@ -92,6 +67,7 @@ addItemButton.addEventListener("click", function () {
 
 itemsBody.addEventListener("input", function (event) {
   if (event.target.classList.contains("item-price")) {
+    updateRequiredPrice(event.target);
     calculateTotal();
   }
 });
@@ -111,10 +87,42 @@ itemsBody.addEventListener("click", function (event) {
 });
 
 // --------------------------------------------------
-// PREVIEW INVOICE
+// EDIT OR PREVIEW INVOICE
 // --------------------------------------------------
 
-previewButton.addEventListener("click", function () {
+async function restoreInvoiceDraft() {
+  if (!new URLSearchParams(location.search).has("edit")) return;
+  const key = await invoiceDraftKey();
+  if (!key) return;
+  const draft = JSON.parse(sessionStorage.getItem(key));
+  if (draft) {
+    document.getElementById("customer-name").value = draft.customerName;
+    document.getElementById("customer-address").value = draft.customerAddress;
+    document.getElementById("customer-phone").value = draft.customerPhone;
+    document.getElementById("job-title").value = draft.jobTitle;
+
+    if (draft.items.length) {
+      itemsBody.replaceChildren();
+      draft.items.forEach(function (item) {
+        fillItemRow(addItemRow(), item);
+      });
+      calculateTotal();
+    }
+  }
+}
+
+restoreInvoiceDraft();
+
+previewButton.addEventListener("click", async function () {
+  const key = await invoiceDraftKey();
+  if (!key) return;
+  const invalidPrice = itemsBody.querySelector(".item-price:required:invalid");
+  if (invalidPrice) {
+    setInvoiceText(document.getElementById("work-assistant-status"), "Enter a valid price for each suggested item before previewing.");
+    invalidPrice.focus();
+    return;
+  }
+
   // Customer information
   const customerName = document.getElementById("customer-name").value;
 
@@ -137,18 +145,20 @@ previewButton.addEventListener("click", function () {
 
     const description = row.querySelector(".item-description").value;
 
-    const price = row.querySelector(".item-price").value;
+    const priceInput = row.querySelector(".item-price");
 
     items.push({
       name: itemName,
       quantity: quantity,
       description: description,
-      price: price,
+      price: priceInput.value,
+      priceRequired: priceInput.required,
     });
   });
 
   // Put all invoice information together
   const invoiceData = {
+    draftId: crypto.randomUUID(),
     customerName: customerName,
     customerAddress: customerAddress,
     customerPhone: customerPhone,
@@ -158,7 +168,7 @@ previewButton.addEventListener("click", function () {
   };
 
   // Save the invoice temporarily
-  sessionStorage.setItem("invoiceData", JSON.stringify(invoiceData));
+  sessionStorage.setItem(key, JSON.stringify(invoiceData));
 
   // Open the invoice preview
   window.location.href = "invoice.html";

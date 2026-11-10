@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="Sign in">Sign in</title>
+    <link rel="stylesheet" href="create-invoice.css" />
+    <script src="invoice-language.js" defer></script>
+    <script src="password-strength.js" defer></script>
+    <script src="password-feedback.js" defer></script>
+    <script src="login.js" defer></script>
+  </head>
+  <body class="login-page">
+    <main class="login-shell">
+      <div class="login-brand">
+        <div class="brand">
+          <img src="palm_cute.webp" width="52" height="52" alt="" />
+          <span data-i18n="Invoice Maker">Invoice Maker</span>
+        </div>
+        <div class="login-brand-copy">
+          <p class="login-tagline" data-i18n="Manage your invoices">Manage your invoices</p>
+          <p data-i18n="Create, organize, and find invoices in one place.">Create, organize, and find invoices in one place.</p>
+        </div>
+      </div>
+      <div class="login-panel">
+        <header class="login-heading">
+          <h1 id="account-heading" data-i18n="Sign in">Sign in</h1>
+          <button type="button" id="invoice-language" lang="es">Español</button>
+        </header>
+        <p class="login-intro" data-i18n="Access your invoice workspace.">Access your invoice workspace.</p>
+        <form id="account-form" method="post" action="/api/auth/login">
+          <label for="username" data-i18n="Username">Username</label>
+          <input id="username" name="username" autocomplete="username" maxlength="32" required />
+          <label for="password" data-i18n="Password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" maxlength="128" required />
+          <div id="new-password-fields" hidden>
+            <div class="password-strength">
+              <meter id="password-strength" min="0" max="3" low="1" high="2" optimum="3" value="0"
+                aria-label="Password strength" data-i18n-label="Password strength"></meter>
+              <p id="password-strength-text" role="status"></p>
+            </div>
+            <label for="password-confirmation" data-i18n="Confirm password">Confirm password</label>
+            <input type="password" id="password-confirmation" autocomplete="new-password" maxlength="128"
+              aria-describedby="password-match" disabled />
+            <p id="password-match" class="password-match" role="status"></p>
+          </div>
+          <div id="setup-fields" hidden>
+            <label for="setup-token" data-i18n="Administrator setup token">Administrator setup token</label>
+            <input type="password" id="setup-token" autocomplete="off" maxlength="96" />
+            <p data-i18n="Get the one-time token from the local admin-setup-token file.">
+              Get the one-time token from the local admin-setup-token file.
+            </p>
+          </div>
+          <p id="account-status" role="alert" hidden></p>
+          <div class="account-form-actions">
+            <button id="submit-account" type="submit" class="primary-button" data-i18n="Sign in">Sign in</button>
+            <button type="button" id="register-account" data-i18n="Create an account">Create an account</button>
+            <button type="button" id="setup-account" data-i18n="Set up administrator" hidden>Set up administrator</button>
+            <button type="button" id="back-to-login" data-i18n="Back to sign in" hidden>Back to sign in</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

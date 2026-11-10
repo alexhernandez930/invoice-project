@@ -1,111 +1,114 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-invoice-preview>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Invoice</title>
-
+    <title data-i18n="Invoice">Invoice</title>
     <link rel="stylesheet" href="invoice.css" />
+    <script src="invoice-language.js" defer></script>
+    <script src="invoice-account.js" defer></script>
+    <script src="invoice-preview.js" defer></script>
   </head>
 
   <body>
-    <div class="invoice">
-      <!-- Invoice title -->
-      <div class="title">
-        <h1><i>Invoice</i></h1>
+    <div class="invoice-actions">
+      <button type="button" id="invoice-language" class="language-button" lang="es">Español</button>
+      <a href="admin.html" data-admin-link data-i18n="Administrator" hidden>Administrator</a>
+      <span data-account-name></span>
+      <button type="button" id="logout-invoice" data-i18n="Sign out" hidden>Sign out</button>
+      <a href="create-invoice.html" data-i18n="Create invoice">Create invoice</a>
+      <a href="invoices.html" id="invoice-archive" data-i18n="Saved invoices">Saved invoices</a>
+      <a href="create-invoice.html?edit=1" id="edit-draft" hidden data-i18n="Edit draft">Edit draft</a>
+      <button type="button" id="save-invoice" hidden data-i18n="Save the invoice">Save the invoice</button>
+      <button type="button" id="edit-invoice" hidden data-i18n="Edit invoice">Edit invoice</button>
+      <button type="button" id="print-invoice" hidden data-i18n="Print / Save as PDF">Print / Save as PDF</button>
+    </div>
+    <p id="invoice-status" class="invoice-status" role="status" hidden></p>
+    <p id="job-translation-status" class="invoice-status" role="status" hidden></p>
+    <p id="invoice-owner" class="invoice-status" hidden><span></span> <strong></strong></p>
+
+    <dialog id="confirm-save" class="invoice-dialog" aria-labelledby="confirm-save-title">
+      <form method="dialog">
+        <h2 id="confirm-save-title" data-i18n="Save this invoice?">Save this invoice?</h2>
+        <p data-i18n="Confirm to save this invoice with the next invoice number and today's date.">Confirm to save this invoice with the next invoice number and today's date.</p>
+        <div class="dialog-actions">
+          <button value="cancel" class="secondary-button" autofocus data-i18n="Cancel">Cancel</button>
+          <button value="save" data-i18n="Confirm save">Confirm save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="edit-invoice-dialog" class="invoice-dialog" aria-labelledby="edit-invoice-title">
+      <form id="edit-invoice-form">
+        <h2 id="edit-invoice-title" data-i18n="Edit invoice">Edit invoice</h2>
+        <label for="edit-address" data-i18n="Customer address">Customer address</label>
+        <textarea id="edit-address" maxlength="300" rows="2" autofocus></textarea>
+        <label for="edit-job" data-i18n="Job description">Job description</label>
+        <textarea id="edit-job" maxlength="300" rows="3"></textarea>
+        <p id="edit-invoice-error" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button type="button" id="cancel-invoice-edit" class="secondary-button" data-i18n="Cancel">Cancel</button>
+          <button type="submit" id="save-invoice-edit" data-i18n="Save changes">Save changes</button>
+        </div>
+      </form>
+    </dialog>
+
+    <main class="invoice" hidden>
+      <header class="invoice-header">
+        <div class="issuer">
+          <img class="logo" src="palm_cute.webp" alt="Invoice logo" data-i18n-alt="Invoice logo" />
+          <div>
+            <p class="issuer-name">Alejandro Hernandez</p>
+            <p>760-658-1072</p>
+            <p>Alexhernandez9307@gmail.com</p>
+          </div>
+        </div>
+        <div class="invoice-meta">
+          <h1 data-i18n="Invoice">Invoice</h1>
+          <p id="preview-invoice-number" data-i18n="Draft">Draft</p>
+          <time id="preview-date"></time>
+        </div>
+      </header>
+
+      <div class="invoice-details">
+        <section class="detail-card">
+          <h2 data-i18n="Bill to">Bill to</h2>
+          <p id="preview-customer-name" class="customer-name">Customer name</p>
+          <address>
+            <span id="preview-address">Customer address</span>
+            <span id="preview-phone">Customer phone</span>
+          </address>
+        </section>
+
+        <section class="detail-card">
+          <h2 data-i18n="Job">Job</h2>
+          <p id="preview-job-title">Job title</p>
+        </section>
       </div>
 
-      <!-- Company information -->
-      <div class="top">
-        <div class="logo">
-          <img src="palm_cute.webp" alt="Company Logo" />
-        </div>
-
-        <div class="user-info">
-          <h2>Alejandro Hernandez</h2>
-          <p>760-658-1072</p>
-          <p>Alexhernandez9307@gmail.com</p>
-        </div>
-      </div>
-
-      <!-- Job title -->
-      <div class="name-top">
-        <h2 class="name">
-          <i id="preview-job-title">Title Job Description</i>
-        </h2>
-
-        <hr />
-      </div>
-
-      <!-- Customer and invoice information -->
-      <div class="invoice-info">
-        <!-- Customer -->
-        <div class="invoice-customer-info">
-          <h3>Bill To:</h3>
-
-          <p>
-            <b id="preview-customer-name"> Customer Name </b>
-          </p>
-
-          <address id="preview-address">Customer Address</address>
-
-          <address id="preview-phone">Customer Phone</address>
-        </div>
-
-        <!-- Invoice number and date -->
-        <div class="invoice-num-date">
-          <p id="preview-invoice-number">INV-0022</p>
-
-          <time id="preview-date"> October 17, 2026 </time>
-        </div>
-      </div>
-
-      <!-- Invoice items -->
-      <table class="items">
+      <table class="items" aria-label="Invoice items" data-i18n-label="Invoice items">
         <thead>
           <tr>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Description</th>
-            <th>Price</th>
+            <th scope="col" data-i18n="Item">Item</th>
+            <th scope="col" data-i18n="Qty">Qty</th>
+            <th scope="col" data-i18n="Description">Description</th>
+            <th scope="col" data-i18n="Price">Price</th>
           </tr>
         </thead>
-
-        <!-- JavaScript will create the rows here -->
         <tbody id="preview-items"></tbody>
       </table>
 
-      <!-- Bottom section -->
-      <div class="bottom-area">
-        <div class="bottom-section">
-          <!-- Notes -->
-          <div class="note-box">
-            <h1>NOTES:</h1>
-
-            <p>
-              If you have any questions, please call 760-658-1072 or email us at
-            </p>
-
-            <p>Alexhernandez9307@gmail.com</p>
-          </div>
-
-          <!-- Total -->
-          <div class="total-box">
-            <h3>TOTAL</h3>
-
-            <p id="preview-total">$0.00</p>
-          </div>
+      <div class="invoice-summary">
+        <div class="total-box">
+          <h2 data-i18n="Total">Total</h2>
+          <p id="preview-total">$0.00</p>
         </div>
 
-        <!-- Footer -->
         <footer>
-          <p>Thank you for your business.</p>
+          <p data-i18n="Thank you for your business.">Thank you for your business.</p>
+          <p data-i18n="Questions? Call 760-658-1072 or email Alexhernandez9307@gmail.com.">Questions? Call 760-658-1072 or email Alexhernandez9307@gmail.com.</p>
         </footer>
       </div>
-    </div>
-
-    <!-- Invoice preview JavaScript -->
-    <script src="invoice-preview.js"></script>
+    </main>
   </body>
 </html>
