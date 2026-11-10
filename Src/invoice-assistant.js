@@ -47,8 +47,8 @@ async function checkAssistantAvailability() {
     }
     const notice = document.getElementById("work-assistant-provider");
     setInvoiceText(notice, provider === "Groq"
-      ? "The assistant sends recordings, work descriptions, and job titles to Groq."
-      : "The assistant sends recordings, work descriptions, and job titles to OpenAI.");
+      ? "The assistant sends recordings, work notes, job titles, and item text to Groq."
+      : "The assistant sends recordings, work notes, job titles, and item text to OpenAI.");
     notice.hidden = false;
     if (!recordingType) {
       showAssistantStatus("Microphone recording is unavailable here. You can type the work description.");

@@ -5,6 +5,7 @@
 const addItemButton = document.getElementById("add-item");
 const itemsBody = document.getElementById("items-body");
 const itemRowTemplate = itemsBody.querySelector(".item-row").cloneNode(true);
+const itemTranslations = new WeakMap();
 const invoiceTotal = document.getElementById("invoice-total");
 const previewButton = document.getElementById("preview-invoice");
 
@@ -47,6 +48,12 @@ function fillItemRow(row, item) {
   row.querySelector(".item-name").value = item.name;
   row.querySelector(".item-quantity").value = item.quantity;
   row.querySelector(".item-description").value = item.description;
+  if (typeof item.nameEnglish === "string" && typeof item.descriptionEnglish === "string") {
+    itemTranslations.set(row, {
+      name: item.name, description: item.description,
+      nameEnglish: item.nameEnglish, descriptionEnglish: item.descriptionEnglish,
+    });
+  }
   const price = row.querySelector(".item-price");
   price.value = item.price;
   if (item.priceRequired) {
@@ -147,13 +154,19 @@ previewButton.addEventListener("click", async function () {
 
     const priceInput = row.querySelector(".item-price");
 
-    items.push({
+    const item = {
       name: itemName,
       quantity: quantity,
       description: description,
       price: priceInput.value,
       priceRequired: priceInput.required,
-    });
+    };
+    const translation = itemTranslations.get(row);
+    if (translation?.name === itemName && translation.description === description) {
+      item.nameEnglish = translation.nameEnglish;
+      item.descriptionEnglish = translation.descriptionEnglish;
+    }
+    items.push(item);
   });
 
   // Put all invoice information together

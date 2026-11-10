@@ -79,7 +79,12 @@ function validateInvoice(body) {
     }
 
     totalCents += cents;
-    return { name, description, quantity, price: (cents / 100).toFixed(2) };
+    const result = { name, description, quantity, price: (cents / 100).toFixed(2) };
+    if (item.nameEnglish != null && item.descriptionEnglish != null) {
+      result.nameEnglish = text(item.nameEnglish, "English item name", 600);
+      result.descriptionEnglish = text(item.descriptionEnglish, "English item description", 5000);
+    }
+    return result;
   });
 
   if (!body.items.some((item) => item.name.trim() || item.description.trim() || item.price.trim())) {

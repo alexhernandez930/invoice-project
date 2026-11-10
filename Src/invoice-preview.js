@@ -20,8 +20,32 @@ function renderJobDetails(invoice) {
   if (!notice.hidden) setInvoiceText(notice, "English translation is unavailable. Showing the original job title.");
 }
 
+function needsEnglishItemText(item) {
+  return (item.name.trim() && !item.nameEnglish?.trim()) ||
+    (item.description.trim() && !item.descriptionEnglish?.trim());
+}
+
+function renderLineItems(invoice) {
+  const english = invoiceLanguage === "en";
+  const itemsTable = document.getElementById("preview-items");
+  itemsTable.replaceChildren();
+  invoice.items.forEach(function (item) {
+    const row = itemsTable.insertRow();
+    row.insertCell().textContent = (english && item.nameEnglish) || item.name;
+    row.insertCell().textContent = item.quantity;
+    row.insertCell().textContent = (english && item.descriptionEnglish) || item.description;
+    row.insertCell().textContent = "$" + Number(item.price).toFixed(2);
+  });
+  const notice = document.getElementById("item-translation-status");
+  notice.hidden = !english || !invoice.items.some(needsEnglishItemText);
+  if (!notice.hidden) {
+    setInvoiceText(notice, "Some invoice items could not be translated. Review their original wording before printing.");
+  }
+}
+
 function renderInvoice(invoice) {
   renderJobDetails(invoice);
+  renderLineItems(invoice);
   document.getElementById("preview-customer-name").textContent = invoice.customerName;
   document.getElementById("preview-phone").textContent = invoice.customerPhone;
   document.getElementById("preview-total").textContent = invoice.total;
@@ -44,15 +68,6 @@ function renderInvoice(invoice) {
     date.dateTime = today.getFullYear() + "-" + month + "-" + day;
   }
   renderInvoiceDate(date);
-
-  const itemsTable = document.getElementById("preview-items");
-  invoice.items.forEach(function (item) {
-    const row = itemsTable.insertRow();
-    row.insertCell().textContent = item.name;
-    row.insertCell().textContent = item.quantity;
-    row.insertCell().textContent = item.description;
-    row.insertCell().textContent = "$" + Number(item.price).toFixed(2);
-  });
 
   document.querySelector(".invoice").hidden = false;
 }
@@ -78,6 +93,35 @@ async function translateJobTitle(title) {
   }
 }
 
+async function translateMissingItemText(items) {
+  const pending = items.filter(needsEnglishItemText);
+  let offset = 0;
+  while (offset < pending.length) {
+    const rows = [];
+    let length = 2;
+    for (const { name, description } of pending.slice(offset, offset + 25)) {
+      const text = { name: name.trim(), description: description.trim() };
+      const size = JSON.stringify(text).length + 1;
+      if (rows.length && length + size > 6000) break;
+      rows.push(text);
+      length += size;
+    }
+    try {
+      const result = await requestInvoice("/api/invoices/assistant/item-text", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: rows }),
+      });
+      result.items.forEach(({ nameEnglish, descriptionEnglish }, index) => {
+        Object.assign(pending[offset + index], { nameEnglish, descriptionEnglish });
+      });
+    } catch {
+      return;
+    }
+    offset += rows.length;
+  }
+}
+
 async function prepareInvoice(invoice) {
   const logo = document.querySelector(".invoice .logo");
   if (invoiceId === null) logo.src = "/api/auth/logo";
@@ -85,6 +129,7 @@ async function prepareInvoice(invoice) {
 
   const [englishTitle] = await Promise.all([
     invoice.jobTitleEnglish ?? translateJobTitle(invoice.jobTitle),
+    translateMissingItemText(invoice.items),
     logo.decode().catch(() => {
       logo.src = "/palm_cute.webp";
       return logo.decode().catch(() => {});
@@ -92,7 +137,10 @@ async function prepareInvoice(invoice) {
   ]);
   invoice.jobTitleEnglish = englishTitle;
   renderInvoice(invoice);
-  languageToggle.addEventListener("click", () => renderJobDetails(invoice));
+  languageToggle.addEventListener("click", () => {
+    renderJobDetails(invoice);
+    renderLineItems(invoice);
+  });
 }
 
 function enableInvoiceEditing(invoice, url) {

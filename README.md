@@ -10,7 +10,7 @@ For first-time admin setup, open **Set up administrator** on the sign-in page an
 
 Choose **Preview Invoice**, then **Save the invoice** and **Confirm save** to assign an invoice number and date. [Saved Invoices](http://127.0.0.1:3000/invoices.html) searches by number, customer name, phone, or address. Open a result to print it, save a PDF, or use **Edit invoice** to update the address or job description.
 
-Use the **Español / English** button to set the website language. The browser remembers that choice. Each invoice preview opens in English and has its own **Español / English** button for the printable labels and date. The assistant translates the job title for the English preview and keeps the original title for the Spanish view. Enter line item descriptions in the language you want your customer to read.
+Use the **Español / English** button to set the website language. The browser remembers that choice. Each invoice preview opens in English and has its own **Español / English** button. The assistant translates the job title, item names, and item descriptions for the English preview. The Spanish view uses the original wording.
 
 On the create form, start typing a name to find a customer from saved invoices. Select a match to fill the name, phone, and address. Typing in the address field requests suggestions from [Photon](https://github.com/komoot/photon#demo-server). You can always enter an address manually. Set `INVOICE_PHOTON_URL` to your Photon instance's `/api` endpoint if needed.
 
